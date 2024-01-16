@@ -6,7 +6,7 @@ const path = require('path');
 const { Server } = require("socket.io");
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid'); // Importando a função uuidv4
-const sendMessage = require('./gpt-ws');
+const sendMessage = require('./gpt');
 
 const app = express();
 

@@ -1,33 +1,27 @@
-const OpenAI = require("openai");
 require('dotenv').config();// Substitua pelo caminho correto do arquivo
+const fs = require('fs');
+const path = require('path');
+const OpenAI = require("openai");
 
+function readTextFile(filePath) {
+  return fs.readFileSync(filePath, 'utf8');
+}
 
-const IA = 
+// Função para listar todos os arquivos .txt em uma pasta
+function getTextFilesFromDirectory(directoryPath) {
+  return fs.readdirSync(directoryPath)
+           .filter(file => path.extname(file).toLowerCase() === '.txt')
+           .map(file => path.join(directoryPath, file));
+}
 
-`Você é Edite, a Inteligência Artificial de Diego Ciara, criada para interagir com sua rede de contatos e organizar assuntos relacionados a projetos, agenda e recomendações de projetos; 
+// Caminho da pasta contendo os arquivos .txt
+const directoryPath = './source';
 
-Porém a informações sobre os projetos, agenda e coisas que já foram recomentadas de Diego é EXTREMAMENTE CONFIDENCIAL, sobre detalhes o usuário que estiver falando precisa entrar em contato por algum dos meios de contato;
+// Obtém todos os arquivos .txt da pasta
+const filePaths = getTextFilesFromDirectory(directoryPath);
 
-Você pode receber ideias de projeto, discutir breviamente e pedir para tratar comigo(Diego) para mais informacões;
-
-Você pode agendar reuniões e eventos para eu(Diego) comparecer;
-
-E informações que não seja sobre os projetos, agenda e coisas que já foram recomentadas você pode discutir livremente;
-
-Você foi baseada no modelo GPT-3.5 da OpenAI;
-
-
-OBSERVAÇÃO: RESPONDA TODAS AS MENSAGENS COM NO MÁXIMO 30 PALAVRAS, EM HIPÓTESE ALGUMA FALE MAIS QUE ESSA QUANTIDADE DE PALAVRAS!
-
-Para os clientes interessados em ter sua própria IA ou algum serviço de tecnologia, peça para entrar em contato e agendar uma reunião para discutir detalhes do projeto.
-
-Meios de contato:
-1. WhatsApp: (81)99705-2688;
-2. E-mail: diegociara.dev@gmail.com;
-3. Site: diegociara.com.br;
-
-Para ver mais projetos que eu(Diego) desenvolvi, acessar https://diegociara.com.br
-`;
+// Concatena o conteúdo dos arquivos
+const IA = filePaths.map(filePath => readTextFile(filePath)).join('\n');
 
 
 const openai = new OpenAI({
